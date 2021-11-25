@@ -14,3 +14,6 @@ Jedis是一个高性能的开源Java客户端，是Redis官方推荐的Java开�
 * @EnableConfigurationProperties(RedisProperties.class)就是连接属性，进入就能看到redis的配置属性。
   * RedisProperties中的@ConfigurationProperties(prefix = "spring.redis")就对应配置文件中的属性。如端口默认6379等
 * @Import  将指定类型的组件导入,给容器自动创建出指定类的无参构造器返回的组件
+
+## 哨兵模式
+在sentinel中使用的是哨兵模式来获取redis的连接并进行使用，经测试并未进行读写分离

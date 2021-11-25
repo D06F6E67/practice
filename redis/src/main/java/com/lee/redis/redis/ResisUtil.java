@@ -13,7 +13,7 @@ public class ResisUtil {
 
     @Autowired
 //    @Qualifier("redisTemplate")
-    private RedisTemplate<Object, Object> redisTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
 
     /**
      * 删除缓存
