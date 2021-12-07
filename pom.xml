@@ -11,6 +11,11 @@
 
     <modules>
         <module>aop</module>
+        <module>configFileEncr</module>
+        <module>dynamicCron</module>
+        <module>mybatisPlusGenerator</module>
+        <module>rabbitmq</module>
+        <module>redis</module>
     </modules>
 
     <build>
