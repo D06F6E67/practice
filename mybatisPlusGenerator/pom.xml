@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.lee</groupId>
-    <artifactId>mybatisPlus</artifactId>
+    <artifactId>mybatisPlusGenerator</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>mybatisPlus</name>
-    <description>mybatisPlus</description>
+    <name>mybatisPlusGenerator</name>
+    <description>代码生成</description>
 
     <properties>
         <java.version>1.8</java.version>
