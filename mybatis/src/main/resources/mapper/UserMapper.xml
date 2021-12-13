@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lee.mybatis.mapper.UserMapper">
+    <resultMap id="userMapper" type="com.lee.mybatis.domain.SysUser">
+        <id property="id" column="id"/>
+        <result property="userName" column="user_name"/>
+        <result property="userPassword" column="user_password"/>
+        <result property="userEmail" column="user_email"/>
+        <result property="userInfo" column="user_info"/>
+        <result property="headImg" column="head_img"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="selectById" resultMap="userMapper">
+        SELECT *
+        FROM sys_user
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectByIdOrUserName" resultMap="userMapper">
+        SELECT *
+        FROM sys_user
+        WHERE 1=1
+        <choose>
+            <when test="id != null">
+                AND id = #{id}
+            </when>
+            <when test="userName != null and userName != ''">
+                AND user_name = #{userName}
+            </when>
+            <otherwise>
+                AND 1=2
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="selectByIdList" resultMap="userMapper">
+        SELECT *
+        FROM sys_user
+        WHERE id in
+        <!-- collection为参数的名字
+                参数类型为集合时默认为 collection
+                参数类型为List集合时默认为 list
+                参数类型为数组时默认为 array
+                参数类型为Map时默认为 _parameter
+                使用@Param注解时 参数名为注解指定的名字 -->
+        <foreach collection="list" open="(" close=")" separator="," item="id" index="i">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="selectByUser" resultMap="userMapper">
+        SELECT *
+        FROM sys_user
+        <where>
+            <if test="userName != null and userName != ''">
+                <bind name="userNameLike" value="'%' + userName + '%'"/>
+                AND user_name LIKE #{userNameLike}
+
+<!--                AND user_name LIKE concat('%', #{userName}, '%')-->
+            </if>
+            <if test="@com.lee.mybatis.utils.StringUtil@isNotEmpty(userEmail)">
+                AND user_email = #{userEmail}
+            </if>
+            <bind name="print" value="@com.lee.mybatis.utils.StringUtil@print(userEmail)"/>
+        </where>
+    </select>
+
+    <select id="selectAll" resultType="com.lee.mybatis.domain.SysUser">
+        SELECT id,
+               user_name     userName,
+               user_password userPassword,
+               user_email    userEmail,
+               user_info     userInfo,
+               head_img      headImg,
+               create_time   createTime
+        FROM sys_user
+    </select>
+
+    <insert id="insert">
+        INSERT INTO sys_user (id, user_name, user_password, user_email, user_info, head_img, create_time)
+        VALUES (#{id}, #{userName}, #{userPassword}, #{userEmail}, #{userInfo}, #{headImg,jdbcType=BLOB},
+                #{createTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <insert id="insert2" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO sys_user (user_name, user_password,
+        <if test="userEmail != null and userEmail != ''">
+            user_email,
+        </if>
+        user_info, head_img, create_time)
+        VALUES (#{userName}, #{userPassword}, #{userEmail},
+        <if test="userEmail != null and userEmail != ''">
+            #{userInfo},
+        </if>
+        #{headImg,jdbcType=BLOB},
+        #{createTime,jdbcType=TIMESTAMP})
+    </insert>
+
+    <insert id="insert3">
+        INSERT INTO sys_user (user_name, user_password, user_email, user_info, head_img, create_time)
+        VALUES (#{userName}, #{userPassword}, #{userEmail}, #{userInfo}, #{headImg,jdbcType=BLOB},
+        #{createTime,jdbcType=TIMESTAMP})
+        <selectKey keyColumn="id" resultType="Long" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <insert id="insertList" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO sys_user (user_name, user_password, user_email, user_info, head_img, create_time)
+        VALUES
+        <foreach collection="list" item="user" separator=",">
+            (#{user.userName}, #{user.userPassword}, #{user.userEmail}, #{user.userInfo}, #{user.headImg,jdbcType=BLOB},
+            #{user.createTime,jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
+
+    <update id="updateById">
+        UPDATE sys_user
+        SET user_name     = #{userName},
+            user_password = #{userPassword},
+            user_email    = #{userEmail},
+            user_info     = #{userInfo},
+            head_img      = #{headImg,jdbcType=BLOB},
+            create_time   = #{createTime,jdbcType=TIMESTAMP}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateByIdSelective">
+        UPDATE sys_user
+        <set>
+            <if test="userName != null and userName != ''">
+                user_name = #{userName},
+            </if>
+            <if test="userPassword != null and userPassword != ''">
+                user_password = #{userPassword},
+            </if>
+            <if test="userEmail != null and userEmail != ''">
+                user_email = #{userEmail},
+            </if>
+            <if test="userInfo != null and userInfo != ''">
+                user_info = #{userInfo},
+            </if>
+            <if test="headImg != null and headImg != ''">
+                head_img = #{headImg,jdbcType=BLOB},
+            </if>
+            <if test="createTime != null and createTime != ''">
+                create_time = #{createTime,jdbcType=TIMESTAMP}
+            </if>
+            id = #{id}
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateByMap">
+        UPDATE sys_user
+        SET
+        <foreach collection="_parameter" item="val" index="key" separator=",">
+            ${key} = #{val}
+        </foreach>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE
+        FROM sys_user
+        WHERE id = #{id}
+    </delete>
+</mapper>
