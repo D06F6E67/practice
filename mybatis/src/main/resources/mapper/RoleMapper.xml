@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.lee.mybatis.mapper.RoleMapper">
-    <select id="selectRoleByUserId" resultType="com.lee.mybatis.domain.SysRole">
+    <select id="selectRoleByUserId" resultType="SysRole">
         SELECT r.id,
                r.role_name   roleName,
                r.enabled,
@@ -15,7 +15,7 @@
         WHERE u.id = #{userId}
     </select>
 
-    <select id="selectRoleByUserIdAndEnabled" resultType="com.lee.mybatis.domain.SysRole">
+    <select id="selectRoleByUserIdAndEnabled" resultType="SysRole">
         SELECT r.id,
                r.role_name   roleName,
                r.enabled,

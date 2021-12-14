@@ -20,7 +20,7 @@ spring:
 # MyBatis配置
 mybatis:
   # 实体存放包名
-  typeAliasesPackage: com.lee.**.domain
+  typeAliasesPackage: com.lee.mybatis.domain
   # 配置mapper的扫描，找到所有的mapper.xml映射文件
   mapperLocations: classpath*:mapper/**/*Mapper.xml
   # 加载全局的配置文件
@@ -28,6 +28,8 @@ mybatis:
   # 开启驼峰命名
   configuration:
     mapUnderscoreToCamelCase: true
+    # 是否启动自动映射行为
+#    autoMappingBehavior:
 # mybatis sql打印  trace<debug<info<warn<error<fatal
 logging:
   level:
