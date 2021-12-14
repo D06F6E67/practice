@@ -30,6 +30,10 @@ mybatis:
     mapUnderscoreToCamelCase: true
     # 是否启动自动映射行为
 #    autoMappingBehavior:
+    # 对任意延迟属性的调用会带有延迟加载属性的对象完整加载，反之按需加载
+    aggressiveLazyLoading: false
+    # 是否启用懒加载方式，上方参数为false时才有效
+    lazyLoadingEnabled: true
 # mybatis sql打印  trace<debug<info<warn<error<fatal
 logging:
   level:

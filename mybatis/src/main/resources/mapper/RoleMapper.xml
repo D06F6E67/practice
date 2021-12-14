@@ -15,6 +15,14 @@
         WHERE u.id = #{userId}
     </select>
 
+    <select id="selectRoleByUserId2" resultType="SysRole">
+        <!-- UnserMapper中association使用如下，因为association中配置的是{id=role_id} 所以下方是用#{id}
+             如果多个参数使用,隔开，例如column="{id=role_id, name=#{role_name}"-->
+        SELECT *
+        FROM sys_role
+        WHERE id = #{id}
+    </select>
+
     <select id="selectRoleByUserIdAndEnabled" resultType="SysRole">
         SELECT r.id,
                r.role_name   roleName,
@@ -24,6 +32,7 @@
         FROM sys_role r
                      INNER JOIN sys_user_role ur ON ur.role_id = r.id
                      INNER JOIN sys_user u ON u.id = ur.user_id
-        WHERE u.id = #{userId} AND r.enabled = #{enabled}
+        WHERE u.id = #{userId}
+          AND r.enabled = #{enabled}
     </select>
 </mapper>
