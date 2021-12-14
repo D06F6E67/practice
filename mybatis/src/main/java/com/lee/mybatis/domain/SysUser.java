@@ -39,4 +39,10 @@ public class SysUser {
      */
     private Date createTime;
 
+
+    /**
+     * 角色信息
+     */
+    private SysRole role;
+
 }

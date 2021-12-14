@@ -2,7 +2,33 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.lee.mybatis.mapper.UserMapper">
-    <resultMap id="userMapper" type="com.lee.mybatis.domain.SysUser">
+
+    <!-- id: 必填，并且唯一select标签中，resultMap指定的值就是该id
+         type: 必填，用于匹配查询列所映射到的Java对象类型
+         extends: 选填，可以配置当前resultMap继承自其他的resultMap，属性值为继承的resultMap的id
+         autoMapping: 选填，可为true或false，用于配置是否启动非映射字段(没在resultMap中配置的字段)
+                      自动映射功能，该配置可以覆盖全局的autoMappingBehavior配置 -->
+    <resultMap id="userMapper" type="SysUser">
+        <!-- resultMap包含的标签
+                constructor: 配置使用构造方法注入结果，包含以下两个子标签
+                    idArg: id参数，标记结果作为id(唯一值)，可以帮助提高整体性能
+                    arg: 注入到构造方法的一个普通结果
+                 id: 一个id结果，标记结果作为id(唯一值)，可以帮助提高整体性能
+                 result: 注入到Java对象属性的普通结果
+                 association: 一个复杂的类型关联，许多结果将包成这种类型
+                 collection: 复杂类型的集合
+                 discriminator: 根据结果值来决定使用那个结果影视
+                 case: 基于某些值的结果映射-->
+        <!-- constructor通过构造方法注入属性的结果值。构造方法中的idArg、arg参数分别对应着
+            resultMap中的id、result标签，它们的含义相同，只是注入方式不同 -->
+        <!-- resultMap中的id、result标签包含的属性相同，不同的地方在于，id表的是
+            主键(或唯一值)的字段(可以有多个)，它们的属性值是通过setter方法注入的 -->
+
+        <!-- column: 从数据库中得到的列名或者时别名
+             property: 映射到列结果的属性。复杂的属性通过"."映射，例如user.name
+             javaType: 一个Java类的完全限定名。如映射到HashMap，则需要明确指定javaType属性
+             jdbcType: 类对应的数据库类型。这是JDBC jdbcType的需要，而不是mybatis需要
+             typeHandler: 使用这个属性可覆盖默认的类型处理器。这个属性时类的完全限定名或类别名-->
         <id property="id" column="id"/>
         <result property="userName" column="user_name"/>
         <result property="userPassword" column="user_password"/>
@@ -12,16 +38,56 @@
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
+    <!-- <select>元素: 定义的查询
+         id属性: 定义了当前查询的唯一一个id
+         resultMap: 用于设置返回值的类型和影射关系
+            其中userMapper值就是上面resultMap的id
+         #{id}: mybatisSQL中使用的预编译参数的一种方式 -->
     <select id="selectById" resultMap="userMapper">
         SELECT *
         FROM sys_user
         WHERE id = #{id}
     </select>
 
+    <resultMap id="userRoleMap" type="SysUser">
+        <!-- property 对应实体类的属性名
+             javaType Java类型
+             resultMap 可以直接使用现有的map
+             columnPrefix 查询列的前缀，配置后，在子标签配置result的column时就可以省略前缀 -->
+        <association property="role" columnPrefix="role_" javaType="SysRole">
+            <result property="id" column="id"/>
+            <result property="roleName" column="role_name"/>
+            <result property="enabled" column="enabled"/>
+            <result property="createBy" column="create_by"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        </association>
+    </resultMap>
+
+    <!-- 配置了mybatis.configuration.mapUnderscoreToCamelCase=true时: user_name会自动映射为userName -->
+    <select id="selectUserAndRoleById" resultType="SysUser">
+        SELECT u.id,
+               u.user_name,
+               u.user_password,
+               u.user_email,
+               u.user_info,
+               u.head_img,
+               u.create_time,
+               r.id          "role.id",
+               r.role_name   "role.roleName",
+               r.enabled     "role.enabled",
+               r.create_by   "role.create_by",
+               r.create_time "role.create_time"
+        FROM sys_user u
+                     INNER JOIN sys_user_role ur ON ur.user_id = u.id
+                     INNER JOIN sys_role r ON r.id = ur.role_id
+        WHERE u.id = #{id}
+    </select>
+
     <select id="selectByIdOrUserName" resultMap="userMapper">
         SELECT *
         FROM sys_user
         WHERE 1=1
+        <!-- choose中至少有一个when 0或1个otherwise -->
         <choose>
             <when test="id != null">
                 AND id = #{id}
@@ -39,12 +105,17 @@
         SELECT *
         FROM sys_user
         WHERE id in
-        <!-- collection为参数的名字
+        <!-- collection: 必填，值为要迭代循环的属性名
                 参数类型为集合时默认为 collection
                 参数类型为List集合时默认为 list
                 参数类型为数组时默认为 array
                 参数类型为Map时默认为 _parameter
-                使用@Param注解时 参数名为注解指定的名字 -->
+                使用@Param注解时 参数名为注解指定的名字
+              item: 变量名，值为迭代对象中取出的每一个值
+              index: 索引的属性名，在集合数组情况下值为当前索引值，当迭代为Map时，资格值为Map的key
+              open: 整个循环内容开头的字符串
+              close: 整个循环内容结尾的字符串
+              separator: 每次循环的分隔符 -->
         <foreach collection="list" open="(" close=")" separator="," item="id" index="i">
             #{id}
         </foreach>
@@ -55,10 +126,10 @@
         FROM sys_user
         <where>
             <if test="userName != null and userName != ''">
+                <!-- 两个属性都是必须的，name: 是绑定上下文变量 value: 是OGNL表达式-->
                 <bind name="userNameLike" value="'%' + userName + '%'"/>
                 AND user_name LIKE #{userNameLike}
-
-<!--                AND user_name LIKE concat('%', #{userName}, '%')-->
+                <!--AND user_name LIKE concat('%', #{userName}, '%')-->
             </if>
             <if test="@com.lee.mybatis.utils.StringUtil@isNotEmpty(userEmail)">
                 AND user_email = #{userEmail}
@@ -67,7 +138,7 @@
         </where>
     </select>
 
-    <select id="selectAll" resultType="com.lee.mybatis.domain.SysUser">
+    <select id="selectAll" resultType="SysUser">
         SELECT id,
                user_name     userName,
                user_password userPassword,
@@ -78,6 +149,19 @@
         FROM sys_user
     </select>
 
+    <!-- id: 命名空间唯一标识符
+         parameterType: 可选，传入的参数的全类名或者别。mybatis可以推断出传入的具体类型，因此不建议配置该值
+         flushCache: 默认true，任何时候只要语句被调用，将会清空一二级缓存
+         timeout: 设置在抛出异常前，驱动程序等待数据库返回请求结果的秒数
+         statementType: 对于STATEMENT、PREPARED、CALLABLE，mybatis会分别使用对应的
+                        Statement、PreparedStatement、CallableStatement，默认值为PREPARED
+         useGeneratedKeys: 默认为false。设置为true，mybatis会使用JDBC的getGeneratedKeys方法获取由数据库生成的主键
+         keyProperty: MyBatis通过getGeneratedKeys获取主键值后将要赋值的属性名。
+                      如果希望得到多个数据库自动生成的列，属性值也可以是以逗号号分隔的属性名称列
+         keyColumn： 仅对时INSERT和UPDATE有用。通过生成的键值设置表中的列名，这个设置仅在某些数据库(如PostgreSQL)中是必须的，
+                     当主键列不是表中的第一列时需要设置。如果希望得到多个生成的列，也可以是逗号分隔的属性名称列表
+         databaseId: 如果配置了databaseIdProvider，MyBatis会加载所有的不带databaseId的或匹配当前databaseId的语句。
+                     如果同时存在带databaseId和不带databaseId的语句，后者会被忽略 -->
     <insert id="insert">
         INSERT INTO sys_user (id, user_name, user_password, user_email, user_info, head_img, create_time)
         VALUES (#{id}, #{userName}, #{userPassword}, #{userEmail}, #{userInfo}, #{headImg,jdbcType=BLOB},
@@ -102,6 +186,10 @@
         INSERT INTO sys_user (user_name, user_password, user_email, user_info, head_img, create_time)
         VALUES (#{userName}, #{userPassword}, #{userEmail}, #{userInfo}, #{headImg,jdbcType=BLOB},
         #{createTime,jdbcType=TIMESTAMP})
+        <!-- 和上方的useGeneratedKeys、 keyProperty用法含义相同
+             resultType: 返回值类型
+             order: 和数据库有关 MySQL是AFTER，因为当前记记录值在insert语句后才能获取到，语句为 SELECT LAST_INSERT_ID()
+                    Oracle是BEFORE，因为需要先从序列获取值，然后作为主键插入到数据库中，语句为 SELECT SEQ_ID.nextval from dual -->
         <selectKey keyColumn="id" resultType="Long" keyProperty="id" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>

@@ -35,6 +35,14 @@ class SysUserTest {
     }
 
     @Test
+    public void selectUserAndRoleById() {
+        SysUser sysUser = userMapper.selectUserAndRoleById(1001L);
+        Assert.assertNotNull(sysUser);
+        Assert.assertNotNull(sysUser.getRole());
+        System.out.println(sysUser.toString());
+    }
+
+    @Test
     public void selectByIdOrUserName() {
         SysUser sysUser = new SysUser();
         SysUser sysUser1 = userMapper.selectByIdOrUserName(sysUser);

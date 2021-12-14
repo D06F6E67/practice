@@ -20,6 +20,13 @@ public interface UserMapper {
     SysUser selectById(Long id);
 
     /**
+     * 根据id获取用户和角色信息(一对一映射)
+     * @param id
+     * @return
+     */
+    SysUser selectUserAndRoleById(Long id);
+
+    /**
      * 根据用户id或用户名查询
      * @param sysUser
      * @return
