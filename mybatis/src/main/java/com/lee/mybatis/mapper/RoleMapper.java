@@ -20,6 +20,14 @@ public interface RoleMapper {
     List<SysRole> selectRoleByUserId(Long userId);
 
     /**
+     * 通过用户id获取用户角色
+     *
+     * @param userId 用户id
+     * @return
+     */
+    List<SysRole> selectRoleByUserId2(Long userId);
+
+    /**
      * 通过用户名和状态获取用户角色
      *
      * @param userId  用户id

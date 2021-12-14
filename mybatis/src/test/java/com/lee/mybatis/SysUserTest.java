@@ -39,7 +39,16 @@ class SysUserTest {
         SysUser sysUser = userMapper.selectUserAndRoleById(1001L);
         Assert.assertNotNull(sysUser);
         Assert.assertNotNull(sysUser.getRole());
-        System.out.println(sysUser.toString());
+        System.out.println(sysUser);
+    }
+
+    @Test
+    public void selectUserAndRoleById2() {
+        SysUser sysUser = userMapper.selectUserAndRoleById2(1001L);
+        Assert.assertNotNull(sysUser);
+        System.out.println("getRole()");
+        Assert.assertNotNull(sysUser.getRole());
+        System.out.println(sysUser);
     }
 
     @Test

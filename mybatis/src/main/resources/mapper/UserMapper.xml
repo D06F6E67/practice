@@ -49,18 +49,29 @@
         WHERE id = #{id}
     </select>
 
-    <resultMap id="userRoleMap" type="SysUser">
-        <!-- property 对应实体类的属性名
-             javaType Java类型
-             resultMap 可以直接使用现有的map
-             columnPrefix 查询列的前缀，配置后，在子标签配置result的column时就可以省略前缀 -->
-        <association property="role" columnPrefix="role_" javaType="SysRole">
-            <result property="id" column="id"/>
-            <result property="roleName" column="role_name"/>
-            <result property="enabled" column="enabled"/>
-            <result property="createBy" column="create_by"/>
-            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-        </association>
+    <!--<resultMap id="userRoleMap" extends="userMapper" type="SysUser">-->
+    <!--    &lt;!&ndash; property 对应实体类的属性名-->
+    <!--         javaType Java类型-->
+    <!--         resultMap 可以直接使用现有的map-->
+    <!--         columnPrefix 查询列的前缀，配置后，在子标签配置result的column时就可以省略前缀 &ndash;&gt;-->
+    <!--    <association property="role" columnPrefix="role_" javaType="SysRole">-->
+    <!--        <result property="id" column="id"/>-->
+    <!--        &lt;!&ndash; 列别名应写为role_role_name &ndash;&gt;-->
+    <!--        <result property="roleName" column="role_name"/>-->
+    <!--        <result property="enabled" column="enabled"/>-->
+    <!--        <result property="createBy" column="create_by"/>-->
+    <!--        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>-->
+    <!--    </association>-->
+    <!--</resultMap>-->
+
+    <resultMap id="userRoleMap" extends="userMapper" type="SysUser">
+        <!-- 和上方作用相同
+             select: 另一个映射查询的id，MyBatis会额外执行这个查询获取嵌套对象的结果
+             column: 列名或别名，将主查询中列的结果作为嵌套查询的参数，配置方式如column={prop1=coll, prop2=col2}, prop1和prop2将作为嵌套查询的参数
+             fetchType: 数据加载方式，可选值为lazy和eager，分别为延迟加载和积极加载。
+                        这个配置会覆盖全局的lazyLoadingEnabled配置，且aggressiveLazyLoading配置为false时才生效
+                        即当参数配置为lazy时当调用sysUser.getRole() 时候才会执行selectRoleByUserId2中的sql-->
+        <association property="role" fetchType="lazy" column="{id=role_id}" select="com.lee.mybatis.mapper.RoleMapper.selectRoleByUserId2"/>
     </resultMap>
 
     <!-- 配置了mybatis.configuration.mapUnderscoreToCamelCase=true时: user_name会自动映射为userName -->
@@ -80,6 +91,20 @@
         FROM sys_user u
                      INNER JOIN sys_user_role ur ON ur.user_id = u.id
                      INNER JOIN sys_role r ON r.id = ur.role_id
+        WHERE u.id = #{id}
+    </select>
+
+    <select id="selectUserAndRoleById2" resultMap="userRoleMap">
+        SELECT u.id,
+        u.user_name,
+        u.user_password,
+        u.user_email,
+        u.user_info,
+        u.head_img,
+        u.create_time,
+        ur.role_id
+        FROM sys_user u
+        INNER JOIN sys_user_role ur ON ur.user_id = u.id
         WHERE u.id = #{id}
     </select>
 
