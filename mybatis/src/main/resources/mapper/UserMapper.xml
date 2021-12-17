@@ -2,7 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.lee.mybatis.mapper.UserMapper">
-
     <!-- id: 必填，并且唯一select标签中，resultMap指定的值就是该id
          type: 必填，用于匹配查询列所映射到的Java对象类型
          extends: 选填，可以配置当前resultMap继承自其他的resultMap，属性值为继承的resultMap的id
@@ -49,31 +48,6 @@
         WHERE id = #{id}
     </select>
 
-    <!--<resultMap id="userRoleMap" extends="userMapper" type="SysUser">-->
-    <!--    &lt;!&ndash; property 对应实体类的属性名-->
-    <!--         javaType Java类型-->
-    <!--         resultMap 可以直接使用现有的map-->
-    <!--         columnPrefix 查询列的前缀，配置后，在子标签配置result的column时就可以省略前缀 &ndash;&gt;-->
-    <!--    <association property="role" columnPrefix="role_" javaType="SysRole">-->
-    <!--        <result property="id" column="id"/>-->
-    <!--        &lt;!&ndash; 列别名应写为role_role_name &ndash;&gt;-->
-    <!--        <result property="roleName" column="role_name"/>-->
-    <!--        <result property="enabled" column="enabled"/>-->
-    <!--        <result property="createBy" column="create_by"/>-->
-    <!--        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>-->
-    <!--    </association>-->
-    <!--</resultMap>-->
-
-    <resultMap id="userRoleMap" extends="userMapper" type="SysUser">
-        <!-- 和上方作用相同
-             select: 另一个映射查询的id，MyBatis会额外执行这个查询获取嵌套对象的结果
-             column: 列名或别名，将主查询中列的结果作为嵌套查询的参数，配置方式如column={prop1=coll, prop2=col2}, prop1和prop2将作为嵌套查询的参数
-             fetchType: 数据加载方式，可选值为lazy和eager，分别为延迟加载和积极加载。
-                        这个配置会覆盖全局的lazyLoadingEnabled配置，且aggressiveLazyLoading配置为false时才生效
-                        即当参数配置为lazy时当调用sysUser.getRole() 时候才会执行selectRoleByUserId2中的sql-->
-        <association property="role" fetchType="lazy" column="{id=role_id}" select="com.lee.mybatis.mapper.RoleMapper.selectRoleByUserId2"/>
-    </resultMap>
-
     <!-- 配置了mybatis.configuration.mapUnderscoreToCamelCase=true时: user_name会自动映射为userName -->
     <select id="selectUserAndRoleById" resultType="SysUser">
         SELECT u.id,
@@ -94,18 +68,106 @@
         WHERE u.id = #{id}
     </select>
 
+    <!--<resultMap id="userRoleMap" extends="userMapper" type="SysUser">-->
+    <!-- property 对应实体类的属性名
+         javaType Java类型
+         resultMap 可以直接使用现有的map
+         columnPrefix 查询列的前缀，配置后，在子标签配置result的column时就可以省略前缀 -->
+    <!--    <association property="role" columnPrefix="role_" javaType="SysRole">-->
+    <!--        <result property="id" column="id"/>-->
+    <!-- 列别名应写为role_role_name -->
+    <!--        <result property="roleName" column="role_name"/>-->
+    <!--        <result property="enabled" column="enabled"/>-->
+    <!--        <result property="createBy" column="create_by"/>-->
+    <!--        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>-->
+    <!--    </association>-->
+    <!--</resultMap>-->
+
+    <resultMap id="userRoleMap" extends="userMapper" type="SysUser">
+        <!-- 和上方作用相同
+             select: 另一个映射查询的id，MyBatis会额外执行这个查询获取嵌套对象的结果
+             column: 列名或别名，将主查询中列的结果作为嵌套查询的参数，配置方式如column={prop1=coll, prop2=col2}, prop1和prop2将作为嵌套查询的参数
+             fetchType: 数据加载方式，可选值为lazy和eager，分别为延迟加载和积极加载。
+                        这个配置会覆盖全局的lazyLoadingEnabled配置，且aggressiveLazyLoading配置为false时才生效
+                        即当参数配置为lazy时当调用sysUser.getRole() 时候才会执行selectRoleByUserId2中的sql-->
+        <association property="role" fetchType="lazy" column="{id=role_id}"
+                     select="com.lee.mybatis.mapper.RoleMapper.selectRoleByUserId2"/>
+    </resultMap>
+
     <select id="selectUserAndRoleById2" resultMap="userRoleMap">
         SELECT u.id,
-        u.user_name,
-        u.user_password,
-        u.user_email,
-        u.user_info,
-        u.head_img,
-        u.create_time,
-        ur.role_id
+               u.user_name,
+               u.user_password,
+               u.user_email,
+               u.user_info,
+               u.head_img,
+               u.create_time,
+               ur.role_id
         FROM sys_user u
-        INNER JOIN sys_user_role ur ON ur.user_id = u.id
+                     INNER JOIN sys_user_role ur ON ur.user_id = u.id
         WHERE u.id = #{id}
+    </select>
+
+    <resultMap id="UserRolesAndPrivilegeMap" type="SysUser" extends="userMapper">
+        <collection property="roleList" fetchType="lazy" column="{userId=id}"
+                    select="com.lee.mybatis.mapper.RoleMapper.selectRoleAndPrivilegeByUserId"/>
+    </resultMap>
+
+    <select id="selectUserRolesAndPrivilegeByUserId" resultMap="UserRolesAndPrivilegeMap">
+        SELECT *
+        FROM sys_user
+        WHERE id = #{userId}
+    </select>
+
+    <resultMap id="userRoleListMap" extends="userMapper" type="SysUser">
+        <collection property="roleList" columnPrefix="role_" resultMap="com.lee.mybatis.mapper.RoleMapper.roleMap"/>
+    </resultMap>
+
+    <select id="selectAllUserAndRole" resultMap="userRoleListMap">
+        SELECT u.id,
+               u.user_name,
+               u.user_password,
+               u.user_email,
+               u.user_info,
+               u.head_img,
+               u.create_time,
+               r.id          role_id,
+               r.role_name   role_role_name,
+               r.enabled     role_enabled,
+               r.create_by   role_create_by,
+               r.create_time role_create_time
+        FROM sys_user u
+                     INNER JOIN sys_user_role ur ON ur.user_id = u.id
+                     INNER JOIN sys_role r ON r.id = ur.role_id
+    </select>
+
+    <resultMap id="userRoleAndPrivilegeMap" type="SysUser" extends="userMapper">
+        <collection property="roleList" columnPrefix="role_"
+                    resultMap="com.lee.mybatis.mapper.RoleMapper.rolePrivilegeMap"/>
+    </resultMap>
+    <!-- 这里需要注意：sys_privilege表映射的字段名称，因为要先映射到roleList中所以前面要加上'role_'，
+         然后又在rolePrivilegeMap中映射到privilegeList中所以又要加上'privilege_'，最后就成了'role_privilege_' -->
+    <select id="selectAllUserAndRoleAndPrivilege" resultMap="userRoleAndPrivilegeMap">
+        SELECT u.id,
+               u.user_name,
+               u.user_password,
+               u.user_email,
+               u.user_info,
+               u.head_img,
+               u.create_time,
+               r.id             role_id,
+               r.role_name      role_role_name,
+               r.enabled        role_enabled,
+               r.create_by      role_create_by,
+               r.create_time    role_create_time,
+               p.id             role_privilege_id,
+               p.privilege_name role_privilege_privilege_name,
+               p.privilege_url  role_privilege_privilege_url
+        FROM sys_user u
+                     INNER JOIN sys_user_role ur ON ur.user_id = u.id
+                     INNER JOIN sys_role r ON r.id = ur.role_id
+                     INNER JOIN sys_role_privilege rp ON rp.role_id = r.id
+                     INNER JOIN sys_privilege p ON p.id = rp.privilege_id
     </select>
 
     <select id="selectByIdOrUserName" resultMap="userMapper">

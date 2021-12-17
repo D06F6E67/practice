@@ -2,6 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.lee.mybatis.mapper.RoleMapper">
+    <resultMap id="roleMap" type="SysRole">
+        <id property="id" column="id"/>
+        <result property="roleName" column="role_name"/>
+        <result property="enabled" column="enabled"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
     <select id="selectRoleByUserId" resultType="SysRole">
         SELECT r.id,
                r.role_name   roleName,
@@ -22,6 +30,63 @@
         FROM sys_role
         WHERE id = #{id}
     </select>
+
+    <resultMap id="rolePrivilegeMap" type="SysRole" extends="roleMap">
+        <collection property="privilegeList" columnPrefix="privilege_"
+                    resultMap="com.lee.mybatis.mapper.PrivilegeMapper.privilegeMap"/>
+    </resultMap>
+
+    <select id="selectAllRoleAndPrivilege" resultMap="rolePrivilegeMap">
+        SELECT r.id,
+               r.role_name,
+               r.enabled,
+               r.create_by,
+               r.create_time,
+               p.id             privilege_id,
+               p.privilege_name privilege_privilege_name,
+               p.privilege_url  privilege_privilege_url
+        FROM sys_role r
+                     INNER JOIN sys_role_privilege rp ON rp.role_id = r.id
+                     INNER JOIN sys_privilege p ON p.id = rp.privilege_id
+    </select>
+
+    <resultMap id="rolePrivilegeListMapSelect" type="SysRole" extends="roleMap">
+        <collection property="privilegeList" fetchType="lazy" column="{roleId=id}"
+                    select="com.lee.mybatis.mapper.PrivilegeMapper.selectPrivilegeBuRoleId"/>
+    </resultMap>
+
+    <select id="selectRoleAndPrivilegeByUserId" resultMap="rolePrivilegeListMapSelect">
+        SELECT r.*
+        FROM sys_role r
+                     INNER JOIN sys_user_role ur ON ur.role_id = r.id
+        WHERE ur.user_id = #{userId}
+    </select>
+
+    <resultMap id="rolePrivilegeListMapChoose" type="SysRole">
+        <!--discriminator属性(和Java中的switch很像)
+                column: 该属性用于设置要进行鉴别比较的值的列
+                javaType: 该属性用于指定列的类型，保证使用相同的Java类型来比较-->
+        <discriminator javaType="int" column="enabled">
+            <!--可以有一个或多个case标签
+                    value: 该值为上方指定column用来匹配的值
+                    resultMap: 当column和value值匹配时，可以配置使用resultMap指定的映射，优先级高于resultType
+                    resultType: 当column和value值匹配时，用于配置使用的resultType-->
+            <case value="1" resultMap="rolePrivilegeListMapSelect"/>
+            <case value="0" resultMap="roleMap"/>
+            <!--<case value="0" resultType="SysRole">-->
+            <!--    <id column="id" property="id"/>-->
+            <!--    <result column="role_name" property="roleName"/>-->
+            <!--</case>-->
+        </discriminator>
+    </resultMap>
+
+    <select id="selectRoleByUserIdChoose" resultMap="rolePrivilegeListMapChoose">
+        SELECT r.*
+        FROM sys_role r
+                     INNER JOIN sys_user_role ur ON ur.role_id = r.id
+        WHERE ur.user_id = #{userId}
+    </select>
+
 
     <select id="selectRoleByUserIdAndEnabled" resultType="SysRole">
         SELECT r.id,

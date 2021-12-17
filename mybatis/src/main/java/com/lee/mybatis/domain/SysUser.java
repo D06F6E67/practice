@@ -3,6 +3,7 @@ package com.lee.mybatis.domain;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 用户表
@@ -44,5 +45,10 @@ public class SysUser {
      * 角色信息
      */
     private SysRole role;
+
+    /**
+     * 用户角色集合(一对多使用)
+     */
+    private List<SysRole> roleList;
 
 }

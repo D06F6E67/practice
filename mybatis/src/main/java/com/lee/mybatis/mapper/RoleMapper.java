@@ -28,6 +28,26 @@ public interface RoleMapper {
     List<SysRole> selectRoleByUserId2(Long userId);
 
     /**
+     * 获取角色对应的权限(一对多 使用collection resultMap映射Bean)
+     * @return
+     */
+    List<SysRole> selectAllRoleAndPrivilege();
+
+    /**
+     * 通过过用户id获取用户角色和权限(一对多 使用collection: select映射Bean)
+     * @param userId
+     * @return
+     */
+    List<SysRole> selectRoleAndPrivilegeByUserId(Long userId);
+
+    /**
+     * 根据用户ID获取用户的角色信息(根据不同的值，返回不同的类型 使用resultMap discriminator)
+     * @param userId
+     * @return
+     */
+    List<SysRole> selectRoleByUserIdChoose(Long userId);
+
+    /**
      * 通过用户名和状态获取用户角色
      *
      * @param userId  用户id

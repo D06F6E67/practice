@@ -52,6 +52,60 @@ class SysUserTest {
     }
 
     @Test
+    public void selectUserRolesAndPrivilegeByUserId() {
+        SysUser sysUser = userMapper.selectUserRolesAndPrivilegeByUserId(1L);
+        Assert.assertNotNull(sysUser);
+        System.out.println("用户名：" + sysUser.getUserName());
+        sysUser.getRoleList().forEach(sysRole -> {
+            System.out.println("角色名：" + sysRole.getRoleName());
+            sysRole.getPrivilegeList().forEach(sysPrivilege -> {
+                System.out.println("权限名：" + sysPrivilege.getPrivilegeName());
+            });
+        });
+    }
+
+    @Test
+    public void selectAllUserAndRole() {
+        List<SysUser> userList = userMapper.selectAllUserAndRole();
+        System.out.println("数量：" + userList.size());
+        userList.forEach(user -> {
+            System.out.println("用户名：" + user.getUserName());
+            user.getRoleList().forEach(role -> {
+                System.out.println("角色名：" + role.getRoleName());
+            });
+        });
+        /**
+         * 测试结果发现查询出来有三条记录，但是数量输出只有两条，也就是说其中两条被合并了
+         * 数据：1 admin 123456 管理员 // 2 admin 123456 普通用户 // 1001 test 123456 普通用户
+         * 输出：用户：admin 角色：管理员 普通用户 // 用户：test 角色：普通用户
+         * mybatis的合并规则是通过<resultMap>中的<id>进行判断，如果<id>中的字段相同就只保留一天数据
+         * 为了测试将<id>改为user_password
+         * 输出：用户：admin 角色：管理员 普通用户
+         * 因为角色<resultMap>中的<id>相同所以普通用户只保留了一条
+         * 如果没有配置<id>属性mybatis会把所有字段都比较一次，只要有一个字段值不同，就不合并。
+         *
+         * 注意：如果<resultMap>中配置了<id>属性，但是没有将<id>属性配置的列查询出来，会导致id对应的都为null最终只会有一条数据。
+         *      所以配置了<id>属性，在查询是一定要包含该列。
+         *  经过测试和上方(书中)说的不同，配置了<id>属性，查询列中没有<id>属性列，就不会合并。可能是mybatis升级了该地方。
+         */
+    }
+
+    @Test
+    public void selectAllUserAndRoleAndPrivilege() {
+        List<SysUser> userList = userMapper.selectAllUserAndRoleAndPrivilege();
+        System.out.println("数量：" + userList.size());
+        userList.forEach(sysUser -> {
+            System.out.println("用户名：" + sysUser.getUserName());
+            sysUser.getRoleList().forEach(sysRole -> {
+                System.out.println("  角色名：" + sysRole.getRoleName());
+                sysRole.getPrivilegeList().forEach(sysPrivilege -> {
+                    System.out.println("    权限名：" + sysPrivilege.getPrivilegeName());
+                });
+            });
+        });
+    }
+
+    @Test
     public void selectByIdOrUserName() {
         SysUser sysUser = new SysUser();
         SysUser sysUser1 = userMapper.selectByIdOrUserName(sysUser);

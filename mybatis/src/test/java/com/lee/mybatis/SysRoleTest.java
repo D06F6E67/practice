@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @SpringBootTest
 class SysRoleTest {
@@ -23,6 +24,47 @@ class SysRoleTest {
 
         Assert.assertNotNull(sysRoles);
         Assert.assertTrue(sysRoles.size() > 0);
+    }
+
+    @Test
+    public void selectAllRoleAndPrivilege() {
+        List<SysRole> sysRoles = roleMapper.selectAllRoleAndPrivilege();
+        System.out.println("数量：" + sysRoles.size());
+        sysRoles.forEach(sysRole -> {
+            System.out.println("角色名：" + sysRole.getRoleName());
+            sysRole.getPrivilegeList().forEach(sysPrivilege -> {
+                System.out.println("  权限名：" + sysPrivilege.getPrivilegeName());
+            });
+        });
+    }
+
+    @Test
+    public void selectRoleAndPrivilegeByUserId() {
+        List<SysRole> sysRoles = roleMapper.selectRoleAndPrivilegeByUserId(1L);
+        sysRoles.forEach(sysRole -> {
+            System.out.println("角色名：" + sysRole.getRoleName());
+            sysRole.getPrivilegeList().forEach(sysPrivilege -> {
+                System.out.println("  权限名：" + sysPrivilege.getPrivilegeName());
+            });
+        });
+    }
+
+    @Test
+    public void selectRoleByUserIdChoose() {
+        List<SysRole> sysRoles = roleMapper.selectRoleByUserIdChoose(1L);
+        sysRoles.forEach(sysRole -> {
+            System.out.println("角色名：" + sysRole.getRoleName());
+            if (sysRole.getId().equals(1L)){
+                Assert.assertNotNull(sysRole.getPrivilegeList());
+            } else if(sysRole.getId().equals(2L)){
+                Assert.assertNull(sysRole.getPrivilegeList());
+            }
+            if (Objects.nonNull(sysRole.getPrivilegeList())) {
+                sysRole.getPrivilegeList().forEach(sysPrivilege -> {
+                    System.out.println("权限名：" + sysPrivilege.getPrivilegeName());
+                });
+            }
+        });
     }
 
     @Test

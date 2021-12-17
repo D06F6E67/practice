@@ -20,35 +20,54 @@ public interface UserMapper {
     SysUser selectById(Long id);
 
     /**
-     * 根据id获取用户和角色信息(一对一映射)
+     * 根据id获取用户和角色信息(一对一映射 使用属性名映射)
      * @param id
      * @return
      */
     SysUser selectUserAndRoleById(Long id);
 
     /**
-     * 根据id获取用户和角色信息(一对一映射)
+     * 根据id获取用户和角色信息(一对一映射 使用association: select映射Bean信息)
      * @param id
      * @return
      */
     SysUser selectUserAndRoleById2(Long id);
 
     /**
-     * 根据用户id或用户名查询
+     * 根据用户id获取角色和权限信息(一对多对多 使用resultMap collection)
+     * @param userId
+     * @return
+     */
+    SysUser selectUserRolesAndPrivilegeByUserId(Long userId);
+
+    /**
+     * 获取所有用户以及对应角色信息(一对对多 使用collection: resultMap映射Bean信息)
+     * @return
+     */
+    List<SysUser> selectAllUserAndRole();
+
+    /**
+     * 获取所有用户以及对应角色以及权限信息(一对对多对多 使用collection: resultMap映射Bean信息)
+     * @return
+     */
+    List<SysUser> selectAllUserAndRoleAndPrivilege();
+
+    /**
+     * 根据用户id或用户名查询(使用 choose when拼接SQL)
      * @param sysUser
      * @return
      */
     SysUser selectByIdOrUserName(SysUser sysUser);
 
     /**
-     * 根据用户id集合查询
+     * 根据用户id集合查询(使用 foreach拼接SQL)
      * @param idList
      * @return
      */
     List<SysUser> selectByIdList(List<Long> idList);
 
     /**
-     * 根据动态条件查询用户信息
+     * 根据动态条件查询用户信息(使用 where-if-bind拼接SQL)
      * @param sysUser
      * @return
      */
@@ -68,21 +87,21 @@ public interface UserMapper {
     int insert(SysUser sysUser);
 
     /**
-     * 新增用户－使用 useGeneratedKeys 方式
+     * 新增用户(使用 insert: useGeneratedKeys 返回id)
      * @param sysUser
      * @return 用户id
      */
     int insert2(SysUser sysUser);
 
     /**
-     * 新增用户－使用 selectKey 方式
+     * 新增用户(使用 selectKey 返回id)
      * @param sysUser
      * @return 用户id
      */
     int insert3(SysUser sysUser);
 
     /**
-     * 批量插入用户
+     * 批量插入用户(使用 foreach拼接SQL)
      * @param userList
      * @return
      */
@@ -96,14 +115,14 @@ public interface UserMapper {
     int updateById(SysUser sysUser);
 
     /**
-     * 根据主键更新
+     * 根据主键更新(使用 set if拼接SQL)
      * @param sysUser
      * @return
      */
     int updateByIdSelective(SysUser sysUser);
 
     /**
-     * 通过Map更新列
+     * 通过Map更新列(使用 foreach拼接SQL)
      * @param map
      * @return
      */
