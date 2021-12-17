@@ -2,6 +2,10 @@ package com.lee.mybatis.mapper;
 
 import org.apache.ibatis.jdbc.SQL;
 
+/**
+ * 返回SQL语句
+ * 两个方法结果相同，直接使用的方式不同。
+ */
 public class PrivilegeProvider {
     public String selectById(final Long id) {
         return new SQL(){
