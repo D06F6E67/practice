@@ -1,6 +1,7 @@
 package com.lee.mybatis;
 
 import com.lee.mybatis.domain.SysRole;
+import com.lee.mybatis.enums.Enabled;
 import com.lee.mybatis.mapper.RoleMapper;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -93,7 +94,7 @@ class SysRoleTest {
     public void inset() {
         SysRole sysRole = new SysRole();
         sysRole.setRoleName("test");
-        sysRole.setEnabled(1);
+        sysRole.setEnabled(Enabled.ENABLED);
         sysRole.setCreateBy(1L);
         sysRole.setCreateTime(new Date());
         int insert = roleMapper.insert3(sysRole);
