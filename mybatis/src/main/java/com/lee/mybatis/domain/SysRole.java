@@ -1,5 +1,6 @@
 package com.lee.mybatis.domain;
 
+import com.lee.mybatis.enums.Enabled;
 import lombok.Data;
 
 import java.util.Date;
@@ -20,9 +21,9 @@ public class SysRole {
      */
     private String roleName;
     /**
-     * 有效标志
+     * 有效标志(使用枚举)
      */
-    private Integer enabled;
+    private Enabled enabled;
     /**
      * 创建人
      */
