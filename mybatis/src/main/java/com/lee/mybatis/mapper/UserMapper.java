@@ -2,6 +2,7 @@ package com.lee.mybatis.mapper;
 
 import com.lee.mybatis.domain.SysUser;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,21 @@ public interface UserMapper {
      * @return
      */
     SysUser selectById(Long id);
+
+    /**
+     * 查询用户信息(使用存储过程)
+     * @param user
+     */
+    void selectUserById(SysUser user);
+
+    /**
+     * 分页查询(使用存储过程)
+     * @param param userName 用户名
+     *              offset 开始位置
+     *              limit 数量
+     * @return
+     */
+    List<SysUser> selectUserPage(Map<String, Object> param);
 
     /**
      * 根据id获取用户和角色信息(一对一映射 使用属性名映射)
@@ -108,6 +124,14 @@ public interface UserMapper {
     int insertList(List<SysUser> userList);
 
     /**
+     * 保存用户信息和角色信息(使用存储过程)
+     * @param user 用户信息
+     * @param roleIds 角色id
+     * @return
+     */
+    int insertUserAndRoles(@Param("user") SysUser user, @Param("roleIds") String roleIds);
+
+    /**
      * 根据主键更新
      * @param sysUser
      * @return
@@ -134,5 +158,12 @@ public interface UserMapper {
      * @return
      */
     int deleteById(Long id);
+
+    /**
+     * 根据id删除用户和用户角色信息(使用存储过程)
+     * @param id
+     * @return
+     */
+    int deleteUserById(Long id);
 
 }

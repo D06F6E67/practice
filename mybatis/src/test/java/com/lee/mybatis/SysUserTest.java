@@ -35,6 +35,29 @@ class SysUserTest {
     }
 
     @Test
+    public void selectUserById() {
+        SysUser user = new SysUser();
+        user.setId(1L);
+        userMapper.selectUserById(user);
+        Assert.assertNotNull(user.getUserName());
+        System.out.println(user.getUserName());
+    }
+
+    @Test
+    public void selectUserPage() {
+        Map<String, Object> param = new HashMap<>();
+        param.put("userName", "ad");
+        param.put("offset", 0);
+        param.put("limit", 10);
+        List<SysUser> userList = userMapper.selectUserPage(param);
+        Long total = Long.valueOf(param.get("total").toString());
+        System.out.println("数量：" + total);
+        userList.forEach(sysUser -> {
+            System.out.println("用户名：" + sysUser.getUserName());
+        });
+    }
+
+    @Test
     public void selectUserAndRoleById() {
         SysUser sysUser = userMapper.selectUserAndRoleById(1001L);
         Assert.assertNotNull(sysUser);
@@ -222,6 +245,20 @@ class SysUserTest {
     }
 
     @Test
+    public void insertUserAndRoles() {
+        SysUser sysUser = new SysUser();
+        sysUser.setUserName("test1");
+        sysUser.setUserPassword("123456");
+        sysUser.setUserEmail("test1@163");
+        sysUser.setUserInfo("test1 info");
+        sysUser.setHeadImg(new byte[]{1,2});
+        // 使用存储过程保存用户信息和角色关联关系
+        userMapper.insertUserAndRoles(sysUser, "1,2");
+        Assert.assertNotNull(sysUser.getId());
+        Assert.assertNotNull(sysUser.getCreateTime());
+    }
+
+    @Test
     @Transactional
     public void updateById() {
         SysUser user = userMapper.selectById(1L);
@@ -266,6 +303,11 @@ class SysUserTest {
         Assert.assertEquals(1, i);
         SysUser user1 = userMapper.selectById(1L);
         Assert.assertNull(user1);
+    }
+
+    @Test
+    public void deleteUserById() {
+        userMapper.deleteUserById(1016L);
     }
 
 }
