@@ -48,6 +48,43 @@
         WHERE id = #{id}
     </select>
 
+    <!--CALLABLE: 执行存储过程
+        由于存储过程不支持mybatis的二级缓存，为了避免出错，设置不使用缓存-->
+    <select id="selectUserById" statementType="CALLABLE" useCache="false">
+        <!--存储过程除了要写上属性名，还必须指定mode，可选值IN OUT INOUT三个
+                入参使用IN 出差使用OUT 输入输出参使用INOUT
+                OUT模式必须指定jdbcType，因为IN模式下mybatsis默认提供jdbcType，在OUT模式没有提供。
+                    另外在Oracle中如果入参存在null情况，那么入参也要指定jdbcType
+            下面headImg还设置了javaType。在mybatis映射Java类中不推荐使用基本类型。
+            数据库BLOB对应Java的byte[]类型，因为byte[]不存在默认值的问题，所以不影响一般的使用，但是在不指定javaType的情况下
+            mybatis默认使用Byte类型。由于byte时基本类型，所以设置javaType时要使用到下划线的方式，这里就是_byte[]。
+            _byte对应的是基本类型，byte对应的是Byte类型，在使用javaType是要注意。-->
+        {CALL select_user_by_id(
+                #{id, mode=IN},
+                #{userName, mode=OUT, jdbcType=VARCHAR},
+                #{userPassword, mode=OUT, jdbcType=VARCHAR},
+                #{userEmail, mode=OUT, jdbcType=VARCHAR},
+                #{userInfo, mode=OUT, jdbcType=VARCHAR},
+                #{headImg, mode=OUT, jdbcType=BLOB, javaType=_byte[]},
+                #{createTime, mode=OUT, jdbcType=TIMESTAMP}
+                )}
+    </select>
+
+    <!--resultMap: 定义的是结果集的映射。
+        select_user_page存储过程，有两个结果集:
+            一个是out参数的结果集
+            一个是select sys_user的结果集，此处需要定义resultMap。
+            而上方select_user_by_id只有一结果集，所以不用定义resultMap。
+            如果有多个结果集，可以使用resultMap="结果集映射类型,结果集映射类型"-->
+    <select id="selectUserPage" statementType="CALLABLE" useCache="false" resultMap="userMapper">
+        {CALL select_user_page(
+        #{userName, mode=IN},
+        #{offset, mode=IN},
+        #{limit, mode=IN},
+        #{total, mode=OUT, jdbcType=BIGINT}
+        )}
+    </select>
+
     <!-- 配置了mybatis.configuration.mapUnderscoreToCamelCase=true时: user_name会自动映射为userName -->
     <select id="selectUserAndRoleById" resultType="SysUser">
         SELECT u.id,
@@ -240,7 +277,7 @@
          parameterType: 可选，传入的参数的全类名或者别。mybatis可以推断出传入的具体类型，因此不建议配置该值
          flushCache: 默认true，任何时候只要语句被调用，将会清空一二级缓存
          timeout: 设置在抛出异常前，驱动程序等待数据库返回请求结果的秒数
-         statementType: 对于STATEMENT、PREPARED、CALLABLE，mybatis会分别使用对应的
+         statementType: 对于STATEMENT(直接操作sql，不预编译)、PREPARED(预编译)、CALLABLE(执行存储过程)，mybatis会分别使用对应的
                         Statement、PreparedStatement、CallableStatement，默认值为PREPARED
          useGeneratedKeys: 默认为false。设置为true，mybatis会使用JDBC的getGeneratedKeys方法获取由数据库生成的主键
          keyProperty: MyBatis通过getGeneratedKeys获取主键值后将要赋值的属性名。
@@ -289,6 +326,19 @@
             (#{user.userName}, #{user.userPassword}, #{user.userEmail}, #{user.userInfo}, #{user.headImg,jdbcType=BLOB},
             #{user.createTime,jdbcType=TIMESTAMP})
         </foreach>
+    </insert>
+
+    <insert id="insertUserAndRoles" statementType="CALLABLE">
+        {CALL insert_user_and_roles(
+                #{user.id, mode=OUT, jdbcType=BIGINT},
+                #{user.userName, mode=IN},
+                #{user.userPassword, mode=IN},
+                #{user.userEmail, mode=IN},
+                #{user.userInfo, mode=IN},
+                #{user.headImg, mode=IN, jdbcType=BLOB},
+                #{user.createTime, mode=OUT, jdbcType=TIMESTAMP},
+                #{roleIds, mode=IN}
+                )}
     </insert>
 
     <update id="updateById">
@@ -341,5 +391,9 @@
         DELETE
         FROM sys_user
         WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteUserById" statementType="CALLABLE">
+        {CALL delete_user_by_id(#{id, mode=IN})}
     </delete>
 </mapper>
