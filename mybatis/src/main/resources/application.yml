@@ -34,6 +34,8 @@ mybatis:
     aggressiveLazyLoading: false
     # 是否启用懒加载方式，上方参数为false时才有效
     lazyLoadingEnabled: true
+    # 是否开启二级缓存，开启后需要在xml中配置namespace属性
+    cacheEnabled: true
   # 自定义的java类型与数据库类型转换的typeHandler的位置
   typeHandlersPackage: com.lee.mybatis.enums.handler
 # mybatis sql打印  trace<debug<info<warn<error<fatal

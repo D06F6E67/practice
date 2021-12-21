@@ -102,5 +102,19 @@ class SysRoleTest {
         System.out.println(sysRole.getId());
     }
 
+    /**
+     * 测试二级缓存
+     */
+    @Test
+    public void testCache() {
+        SysRole sysRole = roleMapper.selectById(1L);
+        sysRole.setRoleName("New Name");
+        SysRole sysRole1 = roleMapper.selectById(1L);
+        // 虽然没有更新数据库但是这个用户名和sysRole重新赋值的名字相同
+        Assert.assertEquals("New Name", sysRole1.getRoleName());
+        // 无论如何，sysRole和sysRole1完全是同一个实例
+        Assert.assertEquals(sysRole, sysRole1);
+    }
+
 
 }

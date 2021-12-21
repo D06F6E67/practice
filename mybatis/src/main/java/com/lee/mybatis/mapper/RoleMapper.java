@@ -9,6 +9,17 @@ import java.util.List;
  * 角色表
  */
 @Mapper
+// 使用注解的方式，如果想对注解方式启用耳机缓存，还需要再Mapper接口中进行配置，
+// 如果Mapper接口也存在对应的XML映射文件，两者同时开启缓存时，还需要特殊配置
+// 下方注解中的内容和xml中一样，具体意义请看xml。readWrite在这里true标识读写，false表示只读
+// @CacheNamespace( eviction = FifoCache.class, flushInterval = 60000, size = 512, readWrite = true)
+// 如果上方注解和对应的xml中同时配置耳机缓存就会抛出 IllegalArgumentException:Caches collection already contains异常
+// 这是因为Mapper和xml的命名空间相同，两者必须同时配置(如果接口不存在使用注解的方法，可以只在xml中配置)，因此按照上方的配置就会出错，
+// 这时候应该使用参照缓存。在Mapper接口中，参照缓存配置配置如下。
+@CacheNamespaceRef(RoleMapper.class)
+// 向上方的配置就可以引用xml中<cache>的缓存
+// MyBatis中很少同时配置mapper和xml，所以参照缓存并不是为了解决这个问题而设计的。参照缓存除了能够通过引用其他缓存减少配置外，
+// 主要作用是解决脏读。
 public interface RoleMapper {
 
     /**
