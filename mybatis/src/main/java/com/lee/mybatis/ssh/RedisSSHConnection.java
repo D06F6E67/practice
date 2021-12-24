@@ -4,9 +4,9 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 
 /**
- * ssh连接
+ * Redis ssh连接
  */
-public class SSHConnection {
+public class RedisSSHConnection {
 
     // 需要了可以打开
     //private final static String S_PATH_FILE_PRIVATE_KEY = "/Users/xxx/.ssh/id_rsa";
@@ -14,9 +14,9 @@ public class SSHConnection {
     //private final static String S_PATH_FILE_KNOWN_HOSTS = "/Users/xxx/.ssh/id_rsa/.ssh/known_hosts";
 
     // 自定义的中转接口，需要和数据源接口设置一样 这个是本地的端口,选取一个没有占用的port即可
-    private final static int LOCAl_PORT = 3307;
-    // 服务端的数据库端口
-    private final static int REMOTE_PORT = 3306;
+    private final static int LOCAl_PORT = 6379;
+    // 服务端的Redis端口
+    private final static int REMOTE_PORT = 6379;
 
     // 连接到哪个服务端的SSH
     private final static String SSH_REMOTE_SERVER = "服务器IP";
@@ -27,7 +27,7 @@ public class SSHConnection {
     // SSH使用密码
     private final static String SSH_PASSWORD = "密码";
     // 服务端的本地mysql服务
-    private final static String MYSQL_REMOTE_SERVER = "mysql-ljd";
+    private final static String MYSQL_REMOTE_SERVER = "服务器redisIP";
 
     private Session session; //represents each ssh session
 
@@ -40,7 +40,7 @@ public class SSHConnection {
     //    System.out.println(new SSHConnection());
     // }
 
-    public SSHConnection() throws Throwable {
+    public RedisSSHConnection() throws Throwable {
 
         JSch jsch = new JSch();
         // 需要用到了开启
@@ -50,7 +50,7 @@ public class SSHConnection {
         session = jsch.getSession(SSH_USER, SSH_REMOTE_SERVER, SSH_REMOTE_PORT);
         session.setPassword(SSH_PASSWORD);
         session.setConfig("StrictHostKeyChecking", "no");
-        session.setTimeout(100);
+        session.setTimeout(1000);
         // 去连接
         session.connect(); //ssh connection established!
         // 设置转发
