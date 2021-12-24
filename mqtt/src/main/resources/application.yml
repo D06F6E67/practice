@@ -3,5 +3,5 @@ mqtt:
   username: admin
   password: admin
   clientId: client_1
+  serverId: service_1
   topic: test
-  timeout: 10000
