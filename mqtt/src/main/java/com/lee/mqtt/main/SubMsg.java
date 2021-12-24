@@ -1,4 +1,4 @@
-package com.lee.mqtt;
+package com.lee.mqtt.main;
 
 import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
 import org.eclipse.paho.client.mqttv3.MqttClient;
