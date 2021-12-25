@@ -27,7 +27,7 @@ public class RedisSSHConnection {
     // SSH使用密码
     private final static String SSH_PASSWORD = "密码";
     // 服务端的本地mysql服务
-    private final static String MYSQL_REMOTE_SERVER = "服务器redisIP";
+    private final static String MYSQL_REMOTE_SERVER = "redis-ljd";
 
     private Session session; //represents each ssh session
 
@@ -56,7 +56,7 @@ public class RedisSSHConnection {
         // 设置转发
         session.setPortForwardingL(LOCAl_PORT, MYSQL_REMOTE_SERVER, REMOTE_PORT);
 
-        System.out.println("SSHConnection--运行OK");
+        System.out.println("Redis SSHConnection--运行OK");
     }
 
     /**

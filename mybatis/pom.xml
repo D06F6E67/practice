@@ -22,23 +22,28 @@
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
 
-        <!-- mybatis -->
+        <!--MySQL-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
+        <!-- mybatis -->
         <!-- 不依赖springBoot的mybatis -->
-        <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis</artifactId>
-            <version>3.5.6</version>
-        </dependency>
-        <!-- 依赖springBoot的mybatis -->
         <!--<dependency>-->
-        <!--    <groupId>org.mybatis.spring.boot</groupId>-->
-        <!--    <artifactId>mybatis-spring-boot-starter</artifactId>-->
-        <!--    <version>1.3.2</version>-->
+        <!--    <groupId>org.mybatis</groupId>-->
+        <!--    <artifactId>mybatis</artifactId>-->
+        <!--    <version>3.5.6</version>-->
         <!--</dependency>-->
+        <!-- 依赖springBoot的mybatis -->
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>1.3.2</version>
+        </dependency>
 
         <!-- ssh -->
         <dependency>
@@ -53,22 +58,30 @@
         </dependency>
 
         <!-- 日志 依赖springBoot -->
-       <!--<dependency>-->
-       <!--     <groupId>org.springframework.boot</groupId>-->
-       <!--     <artifactId>spring-boot-starter-log4j2</artifactId>-->
-       <!-- </dependency>-->
+       <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-log4j2</artifactId>
+        </dependency>
         <!-- 日志 不依赖springBoot -->
+        <!--<dependency>-->
+        <!--    <groupId>org.slf4j</groupId>-->
+        <!--    <artifactId>slf4j-api</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+        <!--    <groupId>org.slf4j</groupId>-->
+        <!--    <artifactId>slf4j-log4j12</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+        <!--    <groupId>log4j</groupId>-->
+        <!--    <artifactId>log4j</artifactId>-->
+        <!--    <version>1.2.17</version>-->
+        <!--</dependency>-->
+
+        <!--MyBatis使用Reids缓存-->
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
+            <groupId>org.mybatis.caches</groupId>
+            <artifactId>mybatis-redis</artifactId>
+            <version>1.0.0-beta2</version>
         </dependency>
 
         <!-- 测试 -->

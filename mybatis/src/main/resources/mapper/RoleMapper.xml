@@ -20,7 +20,8 @@
         size: 引用数目，可以被设置为任意正整数，要记住缓存的对戏数目和运行环境的可用内存资源数目。默认值1024
         readOnly: 只读，true/false，制度的缓存会给所有调用者返回缓存对象的相同实例，因此这些对象不能被修改，这提供了很重要的性能优势。
         可读写的缓存会用过序列化返回缓存对象的拷贝，这种方式会慢一些，但是安全。因此默认是false-->
-    <cache eviction="FIFO" flushInterval="60000" size="512" readOnly="true"/>
+    <!--<cache eviction="FIFO" flushInterval="60000" size="512" readOnly="true"/>-->
+    <cache type="org.mybatis.caches.redis.RedisCache"/>
     <!--下方配置和Mapper中@CacheNamespaceRef(RoleMapper.class)的作用相同，让xml使用Mapper中@CacheNamespace的配置-->
     <!--<cache-ref namespace="com.lee.mybatis.mapper.RoleMapper"/>-->
 

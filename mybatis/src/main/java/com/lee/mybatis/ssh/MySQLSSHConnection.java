@@ -56,7 +56,7 @@ public class MySQLSSHConnection {
         // 设置转发
         session.setPortForwardingL(LOCAl_PORT, MYSQL_REMOTE_SERVER, REMOTE_PORT);
 
-        System.out.println("SSHConnection--运行OK");
+        System.out.println("MySQL SSHConnection--运行OK");
     }
 
     /**
