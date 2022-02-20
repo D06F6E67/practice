@@ -18,6 +18,7 @@
         <module>mybatisPlusGenerator</module>
         <module>rabbitmq</module>
         <module>redis</module>
+        <module>concurrency</module>
     </modules>
 
     <build>
