@@ -2,7 +2,7 @@ package com.lee.mybatis;
 
 import com.lee.mybatis.domain.Country;
 import com.lee.mybatis.mapper.CountryMapper;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;

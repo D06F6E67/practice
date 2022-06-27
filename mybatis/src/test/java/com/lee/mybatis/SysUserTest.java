@@ -3,10 +3,10 @@ package com.lee.mybatis;
 import com.lee.mybatis.domain.SysUser;
 import com.lee.mybatis.mapper.UserMapper;
 import org.junit.Assert;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+// import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -178,7 +178,7 @@ class SysUserTest {
     }
 
     @Test
-    @Transactional
+    // @Transactional
     public void insert() {
         SysUser user = new SysUser();
         user.setUserName("test1");
@@ -194,7 +194,7 @@ class SysUserTest {
     }
 
     @Test
-    @Transactional
+    // @Transactional
     public void insert2() {
         SysUser user = new SysUser();
         user.setUserName("test1");
@@ -211,7 +211,7 @@ class SysUserTest {
     }
 
     @Test
-    @Transactional
+    // @Transactional
     public void insert3() {
         SysUser user = new SysUser();
         user.setUserName("test1");
@@ -227,7 +227,7 @@ class SysUserTest {
     }
 
     @Test
-    @Transactional
+    // @Transactional
     public void insertList() {
         List<SysUser> userList = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
@@ -259,7 +259,7 @@ class SysUserTest {
     }
 
     @Test
-    @Transactional
+    // @Transactional
     public void updateById() {
         SysUser user = userMapper.selectById(1L);
         Assert.assertEquals("admin", user.getUserName());
@@ -271,7 +271,7 @@ class SysUserTest {
     }
 
     @Test
-    @Transactional
+    // @Transactional
     public void updateByIdSelective() {
         SysUser sysUser = new SysUser();
         sysUser.setId(1L);
@@ -283,7 +283,7 @@ class SysUserTest {
     }
 
     @Test
-    @Transactional
+    // @Transactional
     public void updateByMap() {
         Map<String, Object> map = new HashMap<>();
         map.put("id", 1L);
@@ -295,7 +295,7 @@ class SysUserTest {
     }
 
     @Test
-    @Transactional
+    // @Transactional
     public void deleteById() {
         SysUser user = userMapper.selectById(1L);
         Assert.assertNotNull(user);

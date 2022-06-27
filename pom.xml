@@ -6,18 +6,23 @@
 
     <groupId>com.lee</groupId>
     <artifactId>practice</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>pom</packaging>
 
     <modules>
         <module>aop</module>
+        <module>async</module>
         <module>configFileEncr</module>
+        <module>designPatterns</module>
+        <module>leetcode</module>
         <module>dynamicCron</module>
         <module>mqtt</module>
         <module>mybatis</module>
         <module>mybatisPlusGenerator</module>
         <module>rabbitmq</module>
         <module>redis</module>
+        <module>sharrding</module>
+        <module>netty</module>
     </modules>
 
     <build>
@@ -36,12 +41,12 @@
                     <encoding>UTF-8</encoding>
                     <!-- 跳过测试 -->
                     <skip>true</skip>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
+                    <!--<excludes>-->
+                    <!--    <exclude>-->
+                    <!--        <groupId>org.projectlombok</groupId>-->
+                    <!--        <artifactId>lombok</artifactId>-->
+                    <!--    </exclude>-->
+                    <!--</excludes>-->
                 </configuration>
             </plugin>
         </plugins>

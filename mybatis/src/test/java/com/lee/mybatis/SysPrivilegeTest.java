@@ -3,7 +3,7 @@ package com.lee.mybatis;
 import com.lee.mybatis.domain.SysPrivilege;
 import com.lee.mybatis.mapper.PrivilegeMapper;
 import org.junit.Assert;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 

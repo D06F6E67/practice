@@ -4,10 +4,9 @@ import com.lee.mybatis.domain.SysRole;
 import com.lee.mybatis.enums.Enabled;
 import com.lee.mybatis.mapper.RoleMapper;
 import org.junit.Assert;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -90,7 +89,7 @@ class SysRoleTest {
     }
 
     @Test
-    @Transactional
+    // @Transactional
     public void inset() {
         SysRole sysRole = new SysRole();
         sysRole.setRoleName("test");
