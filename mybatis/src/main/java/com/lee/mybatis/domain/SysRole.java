@@ -11,7 +11,6 @@ import java.util.List;
  * 角色表
  */
 @Data
-public class SysRole {
 // 因为Mybatis二级缓存通过序列化的方式实现读写缓存类，所以需要实现序列化接口
 public class SysRole implements Serializable {
 

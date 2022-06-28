@@ -314,7 +314,7 @@ class SysUserTest {
      * 一级缓存测试
      */
     @Test
-    @Transactional
+    // @Transactional
     public void testCache() {
         // 在springboot中只有开启事务才会使用一级缓存，否则每次查询都是一个新的sqlsession一级缓存也就无效
         SysUser sysUser1 = userMapper.selectById(1L);
