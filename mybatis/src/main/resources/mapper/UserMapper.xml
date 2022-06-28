@@ -41,6 +41,7 @@
          id属性: 定义了当前查询的唯一一个id
          resultMap: 用于设置返回值的类型和影射关系
             其中userMapper值就是上面resultMap的id
+         flushCache: 默认false，是否刷新一级缓存
          #{id}: mybatisSQL中使用的预编译参数的一种方式 -->
     <select id="selectById" resultMap="userMapper">
         SELECT *

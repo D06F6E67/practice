@@ -3,6 +3,7 @@ package com.lee.mybatis.domain;
 import com.lee.mybatis.enums.Enabled;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -11,6 +12,10 @@ import java.util.List;
  */
 @Data
 public class SysRole {
+// 因为Mybatis二级缓存通过序列化的方式实现读写缓存类，所以需要实现序列化接口
+public class SysRole implements Serializable {
+
+    private static final long serialVersionUID = 8123346412839602476L;
 
     /**
      * 角色ID

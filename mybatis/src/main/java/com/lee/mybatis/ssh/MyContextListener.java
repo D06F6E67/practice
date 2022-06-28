@@ -7,10 +7,14 @@ import javax.servlet.annotation.WebListener;
 @WebListener
 public class MyContextListener implements ServletContextListener {
 
-    private static SSHConnection conexionssh;
+    private static MySQLSSHConnection mysqlConexionssh;
+    private static RedisSSHConnection redisConexionssh;
 
-    public static SSHConnection getConexionssh() {
-        return conexionssh;
+    public static MySQLSSHConnection getMysqlConexionssh() {
+        return mysqlConexionssh;
+    }
+    public static RedisSSHConnection getRedisConexionssh() {
+        return redisConexionssh;
     }
 
     public MyContextListener() {
@@ -24,7 +28,8 @@ public class MyContextListener implements ServletContextListener {
         // 建立连接
         System.out.println("Context initialized ... !");
         try {
-            conexionssh = new SSHConnection();
+            mysqlConexionssh = new MySQLSSHConnection();
+            redisConexionssh = new RedisSSHConnection();
             System.out.println("成功建立SSH连接");
 
             // Session session = conexionssh.getSession();
@@ -52,9 +57,10 @@ public class MyContextListener implements ServletContextListener {
     @Override
     public void contextDestroyed(ServletContextEvent arg0) {
         // 断开连接
-        System.out.println("Context destroyed ... !\n\n\n");
+        System.out.println("Context destroyed ... !");
         try {
-            conexionssh.closeSSH(); // disconnect
+            mysqlConexionssh.closeSSH(); // disconnect
+            redisConexionssh.closeSSH();
             System.out.println("成功断开SSH连接!");
         } catch (Exception e) {
             e.printStackTrace();

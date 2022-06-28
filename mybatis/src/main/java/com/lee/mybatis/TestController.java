@@ -4,7 +4,7 @@ import com.jcraft.jsch.Session;
 import com.lee.mybatis.domain.Country;
 import com.lee.mybatis.mapper.CountryMapper;
 import com.lee.mybatis.ssh.MyContextListener;
-import com.lee.mybatis.ssh.SSHConnection;
+import com.lee.mybatis.ssh.MySQLSSHConnection;
 import com.lee.mybatis.utils.SSHUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,7 +32,7 @@ public class TestController {
 
     @GetMapping("/cmd")
     public void cmd() {
-        SSHConnection conexionssh = MyContextListener.getConexionssh();
+        MySQLSSHConnection conexionssh = MyContextListener.getMysqlConexionssh();
         if (Objects.nonNull(conexionssh)) {
             Session session = conexionssh.getSession();
             if (Objects.nonNull(session)) {

@@ -310,4 +310,18 @@ class SysUserTest {
         userMapper.deleteUserById(1016L);
     }
 
+    /**
+     * 一级缓存测试
+     */
+    @Test
+    @Transactional
+    public void testCache() {
+        // 在springboot中只有开启事务才会使用一级缓存，否则每次查询都是一个新的sqlsession一级缓存也就无效
+        SysUser sysUser1 = userMapper.selectById(1L);
+        sysUser1.setUserName("New Name");
+        SysUser sysUser2 = userMapper.selectById(1L);
+        Assert.assertEquals("New Name", sysUser2.getUserName());
+        Assert.assertEquals(sysUser1, sysUser2);
+    }
+
 }
