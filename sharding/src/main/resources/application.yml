@@ -1,0 +1,42 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+
+  shardingsphere:
+    datasource:
+      names: db0
+      db0:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driverClassName: com.mysql.jdbc.Driver
+        url: jdbc:mysql://192.168.31.21:3306/sharding?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8
+        username: root
+        password: bmy@1688
+
+    sharding:
+      tables:
+        user:
+          actual-data-nodes: db0.user_$->{2021..2022}$->{(1..12).collect{m -> m.toString().padLeft(2, '0')}}
+          table-strategy:
+            standard:
+              shardingColumn: create_date
+              preciseAlgorithmClassName: com.lee.sharrding.config.DatePreciseShardingAlgorithm
+              rangeAlgorithmClassName: com.lee.sharrding.config.DateRangeShardingAlgorithm
+#              inline:
+#                sharding-column: age
+#                algorithm-expression: user_$->{age % 2}
+
+    props:
+      sql:
+        show: true
+
+allow:
+  range:
+    query:
+      with:
+        inline:
+          sharding: false
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:mapper/*.xml

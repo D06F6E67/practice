@@ -21,7 +21,7 @@
         <module>mybatisPlusGenerator</module>
         <module>rabbitmq</module>
         <module>redis</module>
-        <module>sharrding</module>
+        <module>sharding</module>
         <module>netty</module>
     </modules>
 
