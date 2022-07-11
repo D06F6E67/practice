@@ -12,6 +12,7 @@
     <modules>
         <module>aop</module>
         <module>async</module>
+        <module>concurrency</module>
         <module>configFileEncr</module>
         <module>designPatterns</module>
         <module>leetcode</module>
