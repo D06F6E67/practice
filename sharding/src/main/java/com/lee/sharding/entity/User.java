@@ -1,4 +1,4 @@
-package com.lee.sharrding.entity;
+package com.lee.sharding.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;

@@ -1,4 +1,4 @@
-package com.lee.sharrding.mapper;
+package com.lee.sharding.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

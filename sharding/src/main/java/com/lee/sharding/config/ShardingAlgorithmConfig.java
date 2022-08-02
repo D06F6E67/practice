@@ -1,6 +1,6 @@
-package com.lee.sharrding.config;
+package com.lee.sharding.config;
 
-import com.lee.sharrding.service.TableService;
+import com.lee.sharding.service.TableService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;

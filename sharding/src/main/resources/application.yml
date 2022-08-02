@@ -19,8 +19,8 @@ spring:
           table-strategy:
             standard:
               shardingColumn: create_date
-              preciseAlgorithmClassName: com.lee.sharrding.config.DatePreciseShardingAlgorithm
-              rangeAlgorithmClassName: com.lee.sharrding.config.DateRangeShardingAlgorithm
+              preciseAlgorithmClassName: com.lee.sharding.config.DatePreciseShardingAlgorithm
+              rangeAlgorithmClassName: com.lee.sharding.config.DateRangeShardingAlgorithm
 #              inline:
 #                sharding-column: age
 #                algorithm-expression: user_$->{age % 2}

@@ -1,4 +1,4 @@
-package com.lee.sharrding.service;
+package com.lee.sharding.service;
 
 /**
  * 表

@@ -1,7 +1,7 @@
-package com.lee.sharrding.config;
+package com.lee.sharding.config;
 
 import com.google.common.collect.Range;
-import com.lee.sharrding.service.TableService;
+import com.lee.sharding.service.TableService;
 import org.apache.shardingsphere.api.sharding.standard.RangeShardingAlgorithm;
 import org.apache.shardingsphere.api.sharding.standard.RangeShardingValue;
 import org.springframework.stereotype.Component;

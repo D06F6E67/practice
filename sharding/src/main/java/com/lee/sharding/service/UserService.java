@@ -1,7 +1,7 @@
-package com.lee.sharrding.service;
+package com.lee.sharding.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.lee.sharrding.entity.User;
+import com.lee.sharding.entity.User;
 
 /**
  * @author Lee

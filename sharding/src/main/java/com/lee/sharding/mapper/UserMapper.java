@@ -1,7 +1,7 @@
-package com.lee.sharrding.mapper;
+package com.lee.sharding.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.lee.sharrding.entity.User;
+import com.lee.sharding.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

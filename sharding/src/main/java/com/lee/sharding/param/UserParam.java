@@ -1,4 +1,4 @@
-package com.lee.sharrding.param;
+package com.lee.sharding.param;
 
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;

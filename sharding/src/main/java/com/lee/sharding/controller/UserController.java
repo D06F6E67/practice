@@ -1,9 +1,9 @@
-package com.lee.sharrding.controller;
+package com.lee.sharding.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.lee.sharrding.entity.User;
-import com.lee.sharrding.param.UserParam;
-import com.lee.sharrding.service.UserService;
+import com.lee.sharding.entity.User;
+import com.lee.sharding.param.UserParam;
+import com.lee.sharding.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
