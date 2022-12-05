@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 /**
  * 工厂方法
+ *
  * @author Lee
  */
 public class FactoryMethod {
@@ -32,29 +33,48 @@ public class FactoryMethod {
     }
 }
 
-//抽象产品：提供了产品的接口
+/**
+ * 抽象产品：提供了产品的接口
+ */
 interface Products {
     void show();
 }
-//具体产品1：实现抽象产品中的抽象方法
+
+/**
+ * 具体产品1：实现抽象产品中的抽象方法
+ */
 class Product1 implements Products {
     @Override
     public void show() {
         System.out.println("产品1");
     }
 }
-//具体产品2：实现抽象产品中的抽象方法
+
+/**
+ * 具体产品2：实现抽象产品中的抽象方法
+ */
 class Product2 implements Products {
     @Override
     public void show() {
         System.out.println("产品2");
     }
 }
-//抽象工厂：提供了厂品的生成方法
+
+/**
+ * 抽象工厂：提供了厂品的生成方法
+ */
 interface AbstractFactory {
+    /**
+     * 生成产品
+     *
+     * @return 产品
+     */
     Products newProduct();
 }
-//具体工厂1：实现了厂品的生成方法
+
+/**
+ * 具体工厂1：实现了厂品的生成方法
+ */
 class Factory1 implements AbstractFactory {
     @Override
     public Products newProduct() {
@@ -62,7 +82,10 @@ class Factory1 implements AbstractFactory {
         return new Product1();
     }
 }
-//具体工厂2：实现了厂品的生成方法
+
+/**
+ * 具体工厂2：实现了厂品的生成方法
+ */
 class Factory2 implements AbstractFactory {
     @Override
     public Products newProduct() {

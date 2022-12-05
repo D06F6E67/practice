@@ -7,18 +7,25 @@ package create.singleton;
  */
 public class LazySingleton {
 
-    private static volatile LazySingleton instance = null;    //保证 instance 在所有线程中同步
+    /**
+     * 保证 instance 在所有线程中同步
+     */
+    private static volatile LazySingleton instance = null;
 
+    /**
+     * private 避免类在外部被实例化
+     */
     private LazySingleton() {
         System.out.println("创建");
-    }    //private 避免类在外部被实例化
+    }
 
     public static synchronized LazySingleton getInstance() {
         //getInstance 方法前加同步
-        if (instance == null)
+        if (instance == null) {
             instance = new LazySingleton();
-        else
+        } else {
             System.out.println("已经存在");
+        }
 
         return instance;
     }
@@ -26,7 +33,6 @@ public class LazySingleton {
     public void getName() {
         System.out.println("名称");
     }
-
 }
 
 class LazySingletonTest {
