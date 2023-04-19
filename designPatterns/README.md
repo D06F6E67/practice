@@ -1,5 +1,6 @@
 # 23种设计模式
-
+[文章](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzU4NDcxOTM3OQ==&action=getalbum&album_id=2857024255505580033&scene=173&from_msgid=2247485546&from_itemidx=1&count=3&nolastread=1#wechat_redirect)
+[文章](https://blog.csdn.net/qq_59612674/article/details/120331550)
 - ## 创建型模式 create
 > 创建型模式的主要关注点是“怎样创建对象？”，它的主要特点是“将对象的创建与使用分离”。这样可以降低系统的耦合度，使用者不需要关注对象的创建细节，对象的创建由相关的工厂来完成。就像我们去商场购买商品时，不需要知道商品是怎么生产出来一样，因为它们由专门的厂商生产
 1. 单例 singleton
