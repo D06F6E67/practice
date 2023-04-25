@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lee.sharding.mapper.InfoMapper">
+
+    <select id="listAndUser" resultType="com.lee.sharding.entity.dto.InfoDTO">
+        SELECT
+            i.id,
+            i.user_id,
+            i.value,
+            u.name,
+            u.age
+        FROM info i
+            LEFT JOIN user u ON i.user_id = u.id
+        <where>
+            <if test="startDate != null"> i.create_date >= #{startDate}</if>
+            <if test="endDate != null"> AND i.create_date &lt;= #{endDate}</if>
+        </where>
+    </select>
+</mapper>

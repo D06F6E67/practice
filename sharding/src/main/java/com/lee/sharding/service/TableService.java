@@ -7,7 +7,6 @@ package com.lee.sharding.service;
  */
 public interface TableService {
 
-
     /**
      * 表是否存在
      *
@@ -22,5 +21,4 @@ public interface TableService {
      * @param tableName 表名
      */
     void createTable(String tableName);
-
 }

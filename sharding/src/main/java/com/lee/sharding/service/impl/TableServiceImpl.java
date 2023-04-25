@@ -1,5 +1,6 @@
 package com.lee.sharding.service.impl;
 
+import com.lee.sharding.entity.Info;
 import com.lee.sharding.entity.User;
 import com.lee.sharding.mapper.TableMapper;
 import com.lee.sharding.service.TableService;
@@ -10,7 +11,7 @@ import javax.annotation.Resource;
 /**
  * @author Lee
  */
-@Service
+@Service("tableService")
 public class TableServiceImpl implements TableService {
 
     @Resource
@@ -27,6 +28,8 @@ public class TableServiceImpl implements TableService {
         if (User.TABLE_NAME.equals(tableName.substring(0, i))) {
             tableMapper.createUser(tableName);
         }
+        if (Info.TABLE_NAME.equals(tableName.substring(0, i))) {
+            tableMapper.createInfo(tableName);
+        }
     }
-
 }

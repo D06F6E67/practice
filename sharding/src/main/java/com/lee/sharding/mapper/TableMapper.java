@@ -1,7 +1,6 @@
 package com.lee.sharding.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 /**
  * @author Lee
@@ -15,12 +14,19 @@ public interface TableMapper {
      * @param tableName 表名
      * @return 存在返回表明，不存在返回空
      */
-    Integer existsTable(@Param("tableName") String tableName);
+    Integer existsTable(String tableName);
 
     /**
-     * 创建表
+     * 创建用户表
      *
-     * @param name 表后缀
+     * @param name 表名
      */
-    void createUser(@Param("name") String name);
+    void createUser(String name);
+
+    /**
+     * 创建信息表
+     *
+     * @param name 表名
+     */
+    void createInfo(String name);
 }

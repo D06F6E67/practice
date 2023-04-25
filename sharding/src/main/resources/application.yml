@@ -15,15 +15,21 @@ spring:
     sharding:
       tables:
         user:
-          actual-data-nodes: db0.user_$->{2021..2022}$->{(1..12).collect{m -> m.toString().padLeft(2, '0')}}
+          actual-data-nodes: db0.user_$->{2023..2024}$->{(1..12).collect{m -> m.toString().padLeft(2, '0')}}
           table-strategy:
             standard:
               shardingColumn: create_date
               preciseAlgorithmClassName: com.lee.sharding.config.DatePreciseShardingAlgorithm
               rangeAlgorithmClassName: com.lee.sharding.config.DateRangeShardingAlgorithm
-#              inline:
-#                sharding-column: age
-#                algorithm-expression: user_$->{age % 2}
+        info:
+          actual-data-nodes: db0.info_$->{2023..2024}$->{(1..12).collect{m -> m.toString().padLeft(2, '0')}}
+          table-strategy:
+            standard:
+              shardingColumn: create_date
+              preciseAlgorithmClassName: com.lee.sharding.config.DatePreciseShardingAlgorithm
+              rangeAlgorithmClassName: com.lee.sharding.config.DateRangeShardingAlgorithm
+      bindingTables:
+        - user,info
 
     props:
       sql:

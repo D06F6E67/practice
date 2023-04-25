@@ -21,5 +21,17 @@
           DEFAULT CHARSET = utf8;
     </update>
 
+    <update id="createInfo">
+        CREATE TABLE ${name}
+        (
+            `id`          bigint(20) NOT NULL AUTO_INCREMENT,
+            `user_id`     bigint(20)   DEFAULT NULL,
+            `value`       varchar(255) DEFAULT NULL,
+            `create_date` datetime     DEFAULT NULL,
+            PRIMARY KEY (`id`)
+        ) ENGINE = InnoDB
+          DEFAULT CHARSET = utf8;
+    </update>
+
 
 </mapper>

@@ -1,5 +1,6 @@
-package com.lee.sharding.param;
+package com.lee.sharding.entity.param;
 
+import com.lee.sharding.ExamineDate;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -16,4 +17,10 @@ public class UserParam {
     private Integer age;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createDate;
+    @ExamineDate
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date startDate;
+    @ExamineDate
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date endDate;
 }

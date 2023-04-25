@@ -1,8 +1,8 @@
-package com.lee.sharding.entity;
+package com.lee.sharding.entity.dto;
 
-import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -10,16 +10,12 @@ import java.util.Date;
  * @author Lee
  */
 @Data
-@TableName("user")
-public class User {
+public class UserDTO {
 
-    public final static String TABLE_NAME = "user";
-
-    @TableId(type = IdType.ASSIGN_ID)
     private Long id;
     private String name;
     private Integer age;
-    @TableField(updateStrategy = FieldStrategy.NEVER)
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createDate;
 }
