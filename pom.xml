@@ -24,6 +24,8 @@
         <module>redis</module>
         <module>sharding</module>
         <module>netty</module>
+	    <module>poi</module>
+	    <module>websocket</module>
     </modules>
 
     <build>
