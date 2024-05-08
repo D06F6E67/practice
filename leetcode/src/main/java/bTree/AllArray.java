@@ -1,4 +1,4 @@
-package test;
+package bTree;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @author Lee
  */
-public class permute {
+public class AllArray {
 
     public static void main(String[] args) {
         // 不重复的值

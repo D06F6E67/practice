@@ -1,4 +1,4 @@
-package test;
+package bTree;
 
 import java.util.Objects;
 
@@ -7,7 +7,7 @@ import java.util.Objects;
  *
  * @author Lee
  */
-public class maxDepth {
+public class MaxDepth {
     public static void main(String[] args) {
         TreeNode a = new TreeNode(
                 new TreeNode(
