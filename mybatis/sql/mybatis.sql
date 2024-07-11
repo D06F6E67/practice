@@ -78,7 +78,7 @@ CREATE TABLE `sys_user`  (
 -- Records of sys_user
 -- ----------------------------
 INSERT INTO `sys_user` VALUES (1, 'admin', '123456', 'admin@163.com', '管理员', NULL, '2021-04-01 17:00:58');
-INSERT INTO `sys_user` VALUES (1001, 'test', '123456', 'test@163.com', '测试用户', NULL, '2021-04-01 17:01:52');
+INSERT INTO `sys_user` VALUES (1001, 'bTree', '123456', 'bTree@163.com', '测试用户', NULL, '2021-04-01 17:01:52');
 
 -- ----------------------------
 -- Table structure for sys_user_role
